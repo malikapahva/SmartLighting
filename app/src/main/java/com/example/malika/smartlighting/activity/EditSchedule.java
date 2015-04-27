@@ -1,5 +1,7 @@
 package com.example.malika.smartlighting.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -22,7 +24,6 @@ public class EditSchedule extends ActionBarActivity {
 
     private long scheduleId;
     private ScheduleDao scheduleDao;
-    private Schedule oldSchedule;
     private ScheduleGenerator scheduleGenerator;
 
     @Override
@@ -32,7 +33,7 @@ public class EditSchedule extends ActionBarActivity {
         scheduleGenerator = new ScheduleGenerator(this);
         setContentView(R.layout.addschedule);
         scheduleId = getIntent().getExtras().getLong("scheduleId");
-        oldSchedule = scheduleDao.findScheduleById(scheduleId);
+        Schedule oldSchedule = scheduleDao.findScheduleById(scheduleId);
         if (oldSchedule != null) {
             updateSchedule(oldSchedule);
         }
@@ -49,6 +50,7 @@ public class EditSchedule extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.savecancel, menu);
+        inflater.inflate(R.menu.delete, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -69,6 +71,25 @@ public class EditSchedule extends ActionBarActivity {
                 i.setClassName("com.example.malika.smartlighting", "com.example.malika.smartlighting.activity.ScheduleInfo");
                 startActivity(i);
                 finish();
+            }
+
+            if (item.getItemId() == R.id.delete) {
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(EditSchedule.this);
+                alertBuilder.setMessage("Are you sure you want to delete the selected schedule?");
+                alertBuilder.setNegativeButton("Cancel", null);
+                alertBuilder.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position) {
+                        scheduleDao.deleteSchedule(scheduleId);
+                        Toast.makeText(EditSchedule.this, "Schedule deleted successfully", Toast.LENGTH_LONG).show();
+
+                        Intent i = new Intent();
+                        i.setClassName("com.example.malika.smartlighting", "com.example.malika.smartlighting.activity.ScheduleInfo");
+                        startActivity(i);
+                        finish();
+                    }
+                });
+                alertBuilder.show();
             }
             return super.onOptionsItemSelected(item);
 

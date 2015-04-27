@@ -25,13 +25,8 @@
         <activity
             android:name=".activity.ScheduleInfo"
             android:label="Schedule" />
-        <activity
-            android:name=".activity.DisplaySchedule"
-            android:label="Schedule" />
-
         <activity android:name=".activity.EditSchedule"
             android:label="Edit" />
-
     </application>
 
 </manifest>

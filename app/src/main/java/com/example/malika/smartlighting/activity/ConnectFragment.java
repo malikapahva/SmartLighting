@@ -93,6 +93,7 @@ public class ConnectFragment extends Fragment {
         return view;
     }
 
+
     public void onCommand(View view) {
 
         //if no connection...

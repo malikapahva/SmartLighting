@@ -16,12 +16,13 @@ public class ScheduleDao {
     private DatabaseHelper databaseHelper;
     public static final String TABLE_NAME = "schedule";
     private static final String ID = "id";
+    private static final String ACTIVE = "active";
     private static final String HOURS = "hours";
     private static final String MINUTES = "minutes";
     private static final String LUMINOSITY = "luminosity";
 
     public static final String TABLE_CREATE =
-            "Create table " + TABLE_NAME + "(" + ID + " INTEGER PRIMARY KEY autoincrement," + HOURS + " TEXT ," +
+            "Create table " + TABLE_NAME + "(" + ID + " INTEGER PRIMARY KEY autoincrement," + ACTIVE + " BOOLEAN ," + HOURS + " TEXT ," +
                     MINUTES + " TEXT , " + LUMINOSITY + " TEXT );";
 
     public ScheduleDao(DatabaseHelper databaseHelper) {
@@ -38,6 +39,7 @@ public class ScheduleDao {
     }
 
     private void updateContentValues(Schedule schedule, ContentValues values) {
+        values.put(ACTIVE, schedule.isActive());
         values.put(HOURS, schedule.getHours());
         values.put(MINUTES, schedule.getMinutes());
         values.put(LUMINOSITY, schedule.getLuminosity());
@@ -73,6 +75,7 @@ public class ScheduleDao {
 
     private Schedule fetchScheduleFromCursor(Cursor cursor){
         Schedule schedule = new Schedule(
+                Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(ACTIVE))),
                 cursor.getInt(cursor.getColumnIndex(HOURS)),
                 cursor.getInt(cursor.getColumnIndex(MINUTES)),
                 cursor.getInt(cursor.getColumnIndex(LUMINOSITY))
@@ -91,6 +94,27 @@ public class ScheduleDao {
                 do {
                     Schedule schedule = fetchScheduleFromCursor(cursor);
                     scheduleList.add(schedule);
+                } while (cursor.moveToNext());
+            }
+            return scheduleList;
+        } finally {
+            cursor.close();
+        }
+
+    }
+
+    public List<Schedule> getAllActiveSchedules() {
+        List<Schedule> scheduleList = new ArrayList<Schedule>();
+        String selectQuery = "SELECT  * FROM " + TABLE_NAME;
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    Schedule schedule = fetchScheduleFromCursor(cursor);
+                    if (schedule.isActive()) {
+                        scheduleList.add(schedule);
+                    }
                 } while (cursor.moveToNext());
             }
             return scheduleList;
