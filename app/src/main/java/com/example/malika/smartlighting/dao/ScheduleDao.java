@@ -74,8 +74,9 @@ public class ScheduleDao {
     }
 
     private Schedule fetchScheduleFromCursor(Cursor cursor){
+        int active = cursor.getInt(cursor.getColumnIndex(ACTIVE));
         Schedule schedule = new Schedule(
-                Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(ACTIVE))),
+                active == 1,
                 cursor.getInt(cursor.getColumnIndex(HOURS)),
                 cursor.getInt(cursor.getColumnIndex(MINUTES)),
                 cursor.getInt(cursor.getColumnIndex(LUMINOSITY))

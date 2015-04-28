@@ -24,7 +24,7 @@ public class ScheduleGenerator {
         int minutes = timePicker.getCurrentMinute();
         SeekBar seekBar = (SeekBar) activity.findViewById(R.id.setLuminosity);
         int luminosity = seekBar.getProgress();
-        return new Schedule(hours, minutes, luminosity);
+        return new Schedule(true, hours, minutes, luminosity);
     }
 
 

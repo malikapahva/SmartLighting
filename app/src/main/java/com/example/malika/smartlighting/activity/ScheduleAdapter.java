@@ -14,6 +14,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.malika.smartlighting.R;
+import com.example.malika.smartlighting.dao.DatabaseHelper;
+import com.example.malika.smartlighting.dao.ScheduleDao;
 import com.example.malika.smartlighting.model.Schedule;
 
 import java.util.ArrayList;
@@ -25,13 +27,13 @@ import java.util.List;
 public class ScheduleAdapter extends BaseAdapter implements ListAdapter {
     private List<Schedule> schedules = new ArrayList<Schedule>();
     private Context context;
-    private LayoutInflater layoutInflater;
-    private SmartClient client;
+    private ScheduleDao scheduleDao;
 
 
-    public ScheduleAdapter(List<Schedule> list, Context context) {
-        this.schedules = list;
+    public ScheduleAdapter(List<Schedule> scheduleList, Context context, ScheduleDao scheduleDao) {
+        this.schedules = scheduleList;
         this.context = context;
+        this.scheduleDao = scheduleDao;
     }
 
     @Override
@@ -57,10 +59,11 @@ public class ScheduleAdapter extends BaseAdapter implements ListAdapter {
         }
 
         final Schedule schedule = getItem(position);
-        client = Singleton.getInstance().client;
 
         Switch mySwitch = (Switch) view.findViewById(R.id.onOff);
-        mySwitch.setChecked(true);
+        mySwitch.setOnCheckedChangeListener(null);
+
+        mySwitch.setChecked(schedule.isActive());
 
         TextView listItemText = (TextView) view.findViewById(R.id.scheduleText);
 
@@ -68,11 +71,8 @@ public class ScheduleAdapter extends BaseAdapter implements ListAdapter {
         mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                   schedule.setActive(true);
-                } else {
-                    schedule.setActive(false);
-                }
+                schedule.setActive(isChecked);
+                scheduleDao.updateSchedule(schedule.getId(), schedule);
             }
         });
 

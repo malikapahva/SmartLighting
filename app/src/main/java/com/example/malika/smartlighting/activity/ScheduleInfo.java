@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.malika.smartlighting.R;
 import com.example.malika.smartlighting.dao.DatabaseHelper;
@@ -19,7 +20,6 @@ import com.example.malika.smartlighting.model.Schedule;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -46,7 +46,7 @@ public class ScheduleInfo extends ActionBarActivity {
         });
         addSchedulesToList(schedules);
 
-        Button send = (Button)findViewById(R.id.sendButton);
+       /* Button send = (Button)findViewById(R.id.sendButton);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,24 +59,26 @@ public class ScheduleInfo extends ActionBarActivity {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
     }
 
     private void sendToPie(String jsonSchedules) {
-        //todo: add command to send data to pie
+        //todo: add_send command to send data to pie
+
+        System.out.println(jsonSchedules);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.add, menu);
+        inflater.inflate(R.menu.add_send, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     private void addSchedulesToList(List<Schedule> schedules){
         ListView listView = (ListView) findViewById(R.id.listView);
-        ScheduleAdapter scheduleAdapter = new ScheduleAdapter(schedules, this);
+        ScheduleAdapter scheduleAdapter = new ScheduleAdapter(schedules, this, scheduleDao);
         listView.setAdapter(scheduleAdapter);
     }
 
@@ -87,6 +89,19 @@ public class ScheduleInfo extends ActionBarActivity {
             i.setClassName("com.example.malika.smartlighting", "com.example.malika.smartlighting.activity.AddSchedule");
             startActivity(i);
             finish();
+        }
+
+        if(item.getItemId() == R.id.send){
+            List<Schedule> allActiveSchedules = scheduleDao.getAllActiveSchedules();
+            Schedules input = new Schedules(allActiveSchedules);
+            try {
+                String jsonSchedules = objectMapper.writeValueAsString(input);
+                sendToPie(jsonSchedules);
+                String message = allActiveSchedules.isEmpty() ? "Nothing to send to Pie" : "Schedules successfully sent to Pie, no. of schedules - " + allActiveSchedules.size();
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
