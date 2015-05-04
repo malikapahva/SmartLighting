@@ -34,6 +34,14 @@ public class MainActivity extends ActionBarActivity implements ClientThread.Clie
 
         seekBar.setOnSeekBarChangeListener(new LuminosityListener(this));
 
+        final Button openClose = (Button) findViewById(R.id.openClose);
+        openClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
     class LuminosityListener implements SeekBar.OnSeekBarChangeListener {
