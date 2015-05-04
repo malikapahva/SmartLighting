@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.malika.smartlighting.model.Schedule;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -97,6 +99,7 @@ public class ScheduleDao {
                     scheduleList.add(schedule);
                 } while (cursor.moveToNext());
             }
+            sortSchedules(scheduleList);
             return scheduleList;
         } finally {
             cursor.close();
@@ -137,5 +140,17 @@ public class ScheduleDao {
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         database.update(TABLE_NAME, values, ID + " = " + id, null);
         database.close();
+    }
+
+    public void sortSchedules(List<Schedule> schedules){
+        Collections.sort(schedules, new Comparator<Schedule>() {
+            @Override
+            public int compare(Schedule lhs, Schedule rhs) {
+                String time1 = lhs.getHours() + " : "+  lhs.getMinutes();
+                String time2 = rhs.getHours() + " : "+  rhs.getMinutes();
+                return time1.compareTo(time2);
+            }
+        });
+
     }
 }

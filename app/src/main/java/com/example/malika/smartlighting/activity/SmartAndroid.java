@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.example.malika.smartlighting.R;
 
 
-public class SmartAndroid extends ActionBarActivity {
+public class SmartAndroid extends ActionBarActivity implements ClientThread.ClientInterface {
 
     //Class Variables
     static final String hostnameDefault = "10.176.67.118"; //"10.176.67.118";//"192.168.2.9";//"localhost";
@@ -164,6 +164,11 @@ public class SmartAndroid extends ActionBarActivity {
 
         //Move to Schedule
         nextActivity();
+    }
+
+    @Override
+    public void noConnection() {
+
     }
 
     public void nextActivity(){

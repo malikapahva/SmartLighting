@@ -66,6 +66,10 @@ class SmartClient {
     //Heartbeat
     static final String HEARTBEAT = "<3";
 
+    //Commands
+    static final String LUM = "LUM";
+    static final String SCHEDULE = "SCHEDULE";
+
     //Socket to reach server
     Socket socket;
 

@@ -1,14 +1,13 @@
 package com.example.malika.smartlighting.activity;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,7 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 
 
-public class ScheduleInfo extends ActionBarActivity {
+public class ScheduleInfo extends ActionBarActivity implements ClientThread.ClientInterface {
+    SmartClient client;
     ObjectMapper objectMapper = new ObjectMapper();
     ScheduleDao scheduleDao = new ScheduleDao(new DatabaseHelper(this));
 
@@ -32,6 +32,7 @@ public class ScheduleInfo extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.schedulelist);
+        client = Singleton.getInstance().client;
         List<Schedule> schedules = scheduleDao.getAllSchedules();
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -45,27 +46,27 @@ public class ScheduleInfo extends ActionBarActivity {
             }
         });
         addSchedulesToList(schedules);
-
-       /* Button send = (Button)findViewById(R.id.sendButton);
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<Schedule> allActiveSchedules = scheduleDao.getAllActiveSchedules();
-                Schedules input = new Schedules(allActiveSchedules);
-                try {
-                    String jsonSchedules = objectMapper.writeValueAsString(input);
-                    sendToPie(jsonSchedules);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-            }
-        });*/
     }
 
     private void sendToPie(String jsonSchedules) {
-        //todo: add_send command to send data to pie
-
+        if(client.isConnected()) {
+            ClientThread thread = new ClientThread(this, client);
+            thread.execute(ClientThread.SEND, SmartClient.SCHEDULE + " " + jsonSchedules);
+        }
+        else {
+            noConnection();
+        }
         System.out.println(jsonSchedules);
+    }
+
+    @Override
+    public void update(String result) {
+
+    }
+
+    @Override
+    public void noConnection() {
+        Toast.makeText(this, "You are not connected to the server. Try restarting the app.", Toast.LENGTH_LONG).show();
     }
 
 
