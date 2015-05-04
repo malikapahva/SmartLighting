@@ -1,7 +1,5 @@
 package com.example.malika.smartlighting.model;
 
-import android.widget.Switch;
-
 /**
  * Created by Malika (mxp134930) on 4/1/2015.
  */
@@ -11,6 +9,13 @@ public class Schedule {
     private int hours;
     private int minutes;
     private int luminosity;
+
+    public Schedule() {
+        this.active = false;
+        this.hours = -1;
+        this.minutes = -1;
+        this.luminosity = -1;
+    }
 
     public Schedule(boolean active, int hours, int minutes, int luminosity) {
         this.active = active;
