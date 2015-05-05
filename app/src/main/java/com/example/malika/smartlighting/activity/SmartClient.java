@@ -32,20 +32,20 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-class SmartClient {
+public class SmartClient {
 
     //////////////////////////
     //Customizable Variables//
     //////////////////////////
 
     //Default host
-    static String hostname = "localhost";
+   public static String hostname = "localhost";
 
     //Default port
-    static int port = 1024;
+    public static int port = 1024;
 
     //Max ports to try
-    static int portAttempts = 1;
+    public static int portAttempts = 1;
 
 
     ///////////////////
@@ -53,22 +53,22 @@ class SmartClient {
     ///////////////////
 
     //Client type
-    static String type = "NA";
+   public static String type = "NA";
 
     //Constants of types
-    static final String APP = "APP";
-    static final String PI = "PI";
-    static final String UNDETERMINED = "UNKNOWN";
+    public static final String APP = "APP";
+    public static final String PI = "PI";
+    public static final String UNDETERMINED = "UNKNOWN";
 
     //Safeword
-    static final String SAFEWORD = "EXIT";
+    public static final String SAFEWORD = "EXIT";
 
     //Heartbeat
     static final String HEARTBEAT = "<3";
 
     //Commands
-    static final String LUM = "LUM";
-    static final String SCHEDULE = "SCHEDULE";
+    public static final String LUM = "LUM";
+    public static final String SCHEDULE = "SCHEDULE";
 
     //Socket to reach server
     Socket socket;
@@ -94,7 +94,7 @@ class SmartClient {
     ////////////////
 
     //Constructor (all global inputs)
-    SmartClient()
+    public SmartClient()
     {
 
         //Socket to reach server
@@ -110,7 +110,7 @@ class SmartClient {
 
 
     //Constructor (all inputs, no globals)
-    SmartClient(String type, String hostname, int port)
+    public SmartClient(String type, String hostname, int port)
     {
         //Save inputs
         this.type = type;
@@ -329,7 +329,6 @@ class SmartClient {
 
         return null;
     }
-
 
     /////////////////////////
     //Methods: Overloadable//

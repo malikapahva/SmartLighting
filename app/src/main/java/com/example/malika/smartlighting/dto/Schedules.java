@@ -10,6 +10,9 @@ import java.util.List;
  */
 public class Schedules {
 
+    public Schedules(){
+    }
+
     private List<Schedule> schedules = new ArrayList<>();
 
     public Schedules(List<Schedule> schedules) {

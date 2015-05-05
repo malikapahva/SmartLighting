@@ -12,6 +12,9 @@ public class Schedule {
     private int minutes;
     private int luminosity;
 
+    public Schedule() {
+    }
+
     public Schedule(boolean active, int hours, int minutes, int luminosity) {
         this.active = active;
         this.hours = hours;
