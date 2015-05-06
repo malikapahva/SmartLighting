@@ -1,5 +1,7 @@
 package com.example.malika.smartlighting.model;
 
+import android.widget.Switch;
+
 /**
  * Created by Malika (mxp134930) on 4/1/2015.
  */
