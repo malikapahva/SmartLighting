@@ -48,7 +48,7 @@ public class ScheduleInfo extends ActionBarActivity implements ClientThread.Clie
         addSchedulesToList(schedules);
     }
 
-    private void sendToPie(String jsonSchedules) {
+    private void sendToPi(String jsonSchedules) {
         if(client.isConnected()) {
             ClientThread thread = new ClientThread(this, client);
             thread.execute(ClientThread.SEND, SmartClient.SCHEDULE + " " + jsonSchedules);
@@ -97,7 +97,7 @@ public class ScheduleInfo extends ActionBarActivity implements ClientThread.Clie
             Schedules input = new Schedules(allActiveSchedules);
             try {
                 String jsonSchedules = objectMapper.writeValueAsString(input);
-                sendToPie(jsonSchedules);
+                sendToPi(jsonSchedules);
                 String message = allActiveSchedules.isEmpty() ? "Nothing to send to Pi!" : allActiveSchedules.size() + " Schedules successfully sent to Pi.";
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             } catch (JsonProcessingException e) {

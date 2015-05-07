@@ -67,7 +67,7 @@ public class ScheduleAdapter extends BaseAdapter implements ListAdapter {
 
         TextView listItemText = (TextView) view.findViewById(R.id.scheduleText);
 
-        listItemText.setText(schedule.getHours() + " : " + schedule.getMinutes() + " - " + schedule.getLuminosity());
+        listItemText.setText(schedule.getHours() + " : " + schedule.getMinutes() + " - " + schedule.getLuminosity()+"%");
         mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
