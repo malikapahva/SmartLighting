@@ -28,9 +28,15 @@
 
 package com.example.malika.smartlighting.activity;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ConnectException;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class SmartClient {
 
@@ -69,6 +75,8 @@ public class SmartClient {
     //Commands
     public static final String LUM = "LUM";
     public static final String SCHEDULE = "SCHEDULE";
+    public static final String BLINDS = "BLINDS";
+    public static final String LIGHT = "LIGHT";
 
     //Socket to reach server
     Socket socket;

@@ -29,10 +29,17 @@
         android:id="@+id/scheduleButton"
         android:layout_gravity="center_horizontal" />
 
-    <ToggleButton
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open/Close"
+        android:text="Blinds"
         android:id="@+id/openClose"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Light"
+        android:id="@+id/onOff"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

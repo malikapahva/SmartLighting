@@ -31,17 +31,13 @@ public class MainActivity extends ActionBarActivity implements ClientThread.Clie
             }
         });
         SeekBar seekBar = (SeekBar) findViewById(R.id.luminosity);
-
         seekBar.setOnSeekBarChangeListener(new LuminosityListener(this));
 
         final Button openClose = (Button) findViewById(R.id.openClose);
-        openClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        openClose.setOnClickListener(new BlindsListener(this));
 
-            }
-        });
-
+        final Button onOff = (Button) findViewById(R.id.onOff);
+        onOff.setOnClickListener(new LightListener(this));
     }
 
     class LuminosityListener implements SeekBar.OnSeekBarChangeListener {
@@ -77,6 +73,51 @@ public class MainActivity extends ActionBarActivity implements ClientThread.Clie
             }
 
         }
+    }
+
+    class BlindsListener implements View.OnClickListener {
+
+        ClientThread.ClientInterface app;
+
+        public BlindsListener(ClientThread.ClientInterface parent )
+        {
+            app = parent;
+        }
+
+        @Override
+        public void onClick(View v) {
+            //Start a thread to connect the client
+            if(client.isConnected()) {
+                ClientThread thread = new ClientThread(app, client);
+                thread.execute(ClientThread.SEND, SmartClient.BLINDS + " " + (int)(Math.random() * 1000));
+            }
+            else {
+                app.noConnection();
+            }
+        }
+    }
+
+    class LightListener implements View.OnClickListener {
+
+        ClientThread.ClientInterface app;
+
+        public LightListener(ClientThread.ClientInterface parent )
+        {
+            app = parent;
+        }
+
+        @Override
+        public void onClick(View v) {
+            //Start a thread to connect the client
+            if(client.isConnected()) {
+                ClientThread thread = new ClientThread(app, client);
+                thread.execute(ClientThread.SEND, SmartClient.LIGHT + " " + (int)(Math.random() * 1000));
+            }
+            else {
+                app.noConnection();
+            }
+        }
+
     }
 
     @Override

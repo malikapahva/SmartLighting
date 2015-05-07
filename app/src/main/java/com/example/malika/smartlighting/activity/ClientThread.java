@@ -92,6 +92,9 @@ import android.util.Log;
 
 class ClientThread extends AsyncTask<String, Integer, String> {
 
+    //Wait for response
+    boolean waitForResponse = false;
+
     //Parent file used to call this class
     ClientInterface app;
 
@@ -147,7 +150,10 @@ class ClientThread extends AsyncTask<String, Integer, String> {
                     {
                         client.send(input[1]);
 
-                        output = client.receive();
+                        if(waitForResponse)
+                            output = client.receive();
+                        else
+                            output = input[1];
                     }
                     break;
 

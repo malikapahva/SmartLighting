@@ -98,7 +98,7 @@ public class ScheduleInfo extends ActionBarActivity implements ClientThread.Clie
             try {
                 String jsonSchedules = objectMapper.writeValueAsString(input);
                 sendToPie(jsonSchedules);
-                String message = allActiveSchedules.isEmpty() ? "Nothing to send to Pie" : "Schedules successfully sent to Pie, no. of schedules - " + allActiveSchedules.size();
+                String message = allActiveSchedules.isEmpty() ? "Nothing to send to Pi!" : allActiveSchedules.size() + " Schedules successfully sent to Pi.";
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             } catch (JsonProcessingException e) {
                 e.printStackTrace();

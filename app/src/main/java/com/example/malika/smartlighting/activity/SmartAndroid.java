@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -147,16 +146,18 @@ public class SmartAndroid extends ActionBarActivity implements ClientThread.Clie
             return;
         }
 
+        //Show the ack from the server (accessed by client thread)
+        status.setText(input);
+
         //Could not connect
         if(client.isConnected() == false)
         {
             command.setText("Retry Connection");
             hostname.setEnabled(true);
             port.setEnabled(true);
+            return;
         }
-
-        //Show the ack from the server (accessed by client thread)
-        status.setText(input);
+        
         Toast.makeText(this, input, Toast.LENGTH_SHORT).show();
 
         //Save client to singleton
